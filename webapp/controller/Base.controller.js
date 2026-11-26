@@ -5,7 +5,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], (Controller) => {
       return this.getOwnerComponent().getRouter();
     },
     getModel(sName) {
-      return this.getView.getModel(sName);
+      return this.getView().getModel(sName);
     },
     setModel(oModel, sName) {
       return this.getView().setModel(oModel, sName);

@@ -88,49 +88,36 @@
         "type": "View",
         "viewType": "XML",
         "path": "project1.view",
-        "viewPath": "project1.view",
         "async": true,
         "bypassed": {
           "target": ["master"]
-        },
-        "routes": [
-          {
-            "name": "master",
-            "pattern": "",
-            "target": ["master"]
-          },
-          {
-            "name": "object",
-            "pattern": "Orders/{objectId}",
-            "target": ["master", "object"]
-          }
-        ],
-        "targets": {
-          "master": {
-            "id": "Master",
-            "name": "Master",
-            "lavel": 1,
-            "controlAggregation": "beginColumnPages"
-          },
-          "object": {
-            "id": "Detail",
-            "name": "Detail",
-            "lavel": 2,
-            "controlAggregation": "midColumnPages"
-          }
         }
       },
+
       "routes": [
         {
-          "name": "RouteMain",
-          "pattern": ":?query:",
-          "target": ["TargetMain"]
+          "name": "master",
+          "pattern": "",
+          "target": ["master"]
+        },
+        {
+          "name": "object",
+          "pattern": "Orders/{objectId}",
+          "target": ["master", "object"]
         }
       ],
       "targets": {
-        "TargetMain": {
-          "id": "Main",
-          "name": "Main"
+        "master": {
+          "id": "Master",
+          "name": "Master",
+          "level": 1,
+          "controlAggregation": "beginColumnPages"
+        },
+        "object": {
+          "id": "Detail",
+          "name": "Detail",
+          "level": 2,
+          "controlAggregation": "midColumnPages"
         }
       }
     },

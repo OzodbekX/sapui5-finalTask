@@ -1,0 +1,23 @@
+[
+  {
+    "EmployeeID": 7830,
+    "FirstName": "Andrew",
+    "LastName": "Fuller",
+    "Title": "Designer",
+    "HomePhone": "01781234598"
+  },
+  {
+    "EmployeeID": 7831,
+    "FirstName": "Nancy",
+    "LastName": "Davolio",
+    "Title": "Sales Representative",
+    "HomePhone": "01781234511"
+  },
+  {
+    "EmployeeID": 7832,
+    "FirstName": "Janet",
+    "LastName": "Leverling",
+    "Title": "Sales Manager",
+    "HomePhone": "01781234522"
+  }
+]

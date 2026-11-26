@@ -14,6 +14,17 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.33.0",
       "toolsId": "a835adfd-9ce5-44b8-b57d-784f2f5d6fb8"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/V2/Northwind/Northwind.svc/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "annotations": [],
+          "localUri": "localService/metadata.xml"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -38,7 +49,9 @@
       "minUI5Version": "1.154.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.ui.layout": {}
       }
     },
     "contentDensities": {
@@ -51,6 +64,14 @@
         "settings": {
           "bundleName": "project1.i18n.i18n"
         }
+      },
+      "odataV2": {
+        "type": "sap.ui.model.v2.ODataModel",
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "OneWay"
+        }
       }
     },
     "resources": {
@@ -62,23 +83,48 @@
     },
     "routing": {
       "config": {
-        "routerClass": "sap.m.routing.Router",
-        "controlAggregation": "pages",
-        "controlId": "app",
-        "transition": "slide",
+        "routerClass": "sap.f.routing.Router",
+        "controlId": "layout",
         "type": "View",
         "viewType": "XML",
         "path": "project1.view",
+        "viewPath": "project1.view",
         "async": true,
-        "viewPath": "project1.view"
+        "bypassed": {
+          "target": ["master"]
+        },
+        "routes": [
+          {
+            "name": "master",
+            "pattern": "",
+            "target": ["master"]
+          },
+          {
+            "name": "object",
+            "pattern": "Orders/{objectId}",
+            "target": ["master", "object"]
+          }
+        ],
+        "targets": {
+          "master": {
+            "id": "Master",
+            "name": "Master",
+            "lavel": 1,
+            "controlAggregation": "beginColumnPages"
+          },
+          "object": {
+            "id": "Detail",
+            "name": "Detail",
+            "lavel": 2,
+            "controlAggregation": "midColumnPages"
+          }
+        }
       },
       "routes": [
         {
           "name": "RouteMain",
           "pattern": ":?query:",
-          "target": [
-            "TargetMain"
-          ]
+          "target": ["TargetMain"]
         }
       ],
       "targets": {

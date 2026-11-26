@@ -1,0 +1,103 @@
+<mvc:View
+    controllerName="project1.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+>
+    <Page
+        id="masterPage"
+        title="{masterView>/title}"
+    >
+        <subHeader>
+            <OverflowToolbar id="masterToolbar">
+                <SearchField
+                    id="searchField"
+                    showRefreshButton="true"
+                    tooltip="{i18n>searchTooltip}"
+                    search=".onSearch"
+                    width="auto"
+                >
+                    <layoutData>
+                        <OverflowToolbarLayoutData
+                            id="searchLayoutData"
+                            minWidth="150px"
+                            maxWidth="240px"
+                            shrinkable="true"
+                            priority="NeverOverflow"
+                        />
+                    </layoutData>
+                </SearchField>
+                <ToolbarSpacer id="masterSpacer" />
+                <Button
+                    id="filterButton"
+                    icon="sap-icon://filter"
+                    type="Transparent"
+                    tooltip="{i18n>filter}"
+                    press=".onOpenFilter"
+                />
+                <Button
+                    id="groupButton"
+                    icon="sap-icon://group-2"
+                    type="Transparent"
+                    tooltip="{i18n>group}"
+                    press=".onOpenGroup"
+                />
+            </OverflowToolbar>
+        </subHeader>
+        <content>
+            <List
+                id="ordersList"
+                mode="SingleSelectMaster"
+                growing="true"
+                growingScrollToLoad="true"
+                noDataText="{i18n>noOrders}"
+                updateFinished=".onUpdateFinished"
+                selectionChange=".onSelectionChange"
+                items="{
+                    path: 'odataV2>/Orders',
+                    sorter: { path: 'OrderID', descending: true }
+                }"
+            >
+                <items>
+                    <ObjectListItem
+                        id="orderListItem"
+                        title="{i18n>order} {odataV2>OrderID}"
+                        number="{
+                            path: 'odataV2>OrderDate',
+                            type: 'sap.ui.model.type.Date',
+                            formatOptions: { style: 'short', UTC: true }
+                        }"
+                    >
+                        <firstStatus>
+                            <ObjectStatus
+                                id="deliveryStatus"
+                                text="{
+                                    parts: ['odataV2>RequiredDate', 'odataV2>ShippedDate'],
+                                    formatter: '.formatter.deliveryText'
+                                }"
+                                state="{
+                                    parts: ['odataV2>RequiredDate', 'odataV2>ShippedDate'],
+                                    formatter: '.formatter.deliveryState'
+                                }"
+                            />
+                        </firstStatus>
+                        <attributes>
+                            <ObjectAttribute
+                                id="customerAttr"
+                                text="{odataV2>CustomerName}"
+                            />
+                            <ObjectAttribute
+                                id="shippedAttr"
+                                title="{i18n>shipped}"
+                                text="{
+                                    path: 'odataV2>ShippedDate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { style: 'medium', UTC: true }
+                                }"
+                            />
+                        </attributes>
+                    </ObjectListItem>
+                </items>
+            </List>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,48 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <ViewSettingsDialog
+        id="viewSettingsDialog"
+        confirm=".onConfirmViewSettings"
+    >
+        <groupItems>
+            <ViewSettingsItem
+                id="groupCustomer"
+                text="{i18n>customer}"
+                key="CustomerName"
+            />
+        </groupItems>
+        <filterItems>
+            <ViewSettingsFilterItem
+                id="filterCustomer"
+                text="{i18n>customer}"
+                key="CustomerName"
+                multiSelect="true"
+            >
+                <items>
+                    <ViewSettingsItem
+                        id="fAlfreds"
+                        text="Alfreds Futterkiste"
+                        key="Alfreds Futterkiste"
+                    />
+                    <ViewSettingsItem
+                        id="fHorn"
+                        text="Around the Horn"
+                        key="Around the Horn"
+                    />
+                    <ViewSettingsItem
+                        id="fBerglunds"
+                        text="Berglunds snabbköp"
+                        key="Berglunds snabbköp"
+                    />
+                    <ViewSettingsItem
+                        id="fTortuga"
+                        text="Tortuga Restaurante"
+                        key="Tortuga Restaurante"
+                    />
+                </items>
+            </ViewSettingsFilterItem>
+        </filterItems>
+    </ViewSettingsDialog>
+</core:FragmentDefinition>

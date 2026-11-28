@@ -14,7 +14,7 @@ sap.ui.define(
         return oModel;
       },
       createAppViewModel: function () {
-        return new JSONModel({ layout: "OneColumn" });
+        return new JSONModel({ layout: "OneColumn", editMode: false });
       },
     };
   },

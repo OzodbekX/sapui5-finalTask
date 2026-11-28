@@ -13,9 +13,12 @@ sap.ui.define(
         // call the base component's init function
         UIComponent.prototype.init.apply(this, arguments);
 
-        // set the device model
         this.setModel(models.createDeviceModel(), "device");
-        this.setModel(models.createDeviceModel(), "appView");
+        this.setModel(models.createAppViewModel(), "appView");
+
+        this.getRouter().attachBypassed(() =>
+          this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded"),
+        );
 
         // enable routing
         this.getRouter().initialize();

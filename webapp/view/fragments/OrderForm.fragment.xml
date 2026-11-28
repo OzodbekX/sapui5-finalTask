@@ -1,0 +1,109 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+>
+    <form:SimpleForm
+        id="editForm"
+        visible="{detailView>/editMode}"
+        editable="true"
+        layout="ResponsiveGridLayout"
+        labelSpanL="3"
+        labelSpanM="3"
+        columnsL="1"
+        columnsM="1"
+    >
+        <Label
+            id="lblEditCustomer"
+            text="{i18n>customer}"
+            required="true"
+        />
+        <Input
+            id="inpCustomer"
+            value="{odataV2>CustomerName}"
+            maxLength="40"
+            liveChange=".onOrderInputLiveChange"
+        />
+
+        <Label
+            id="lblEditOrdered"
+            text="{i18n>ordered}"
+            required="true"
+        />
+        <DatePicker
+            id="dpOrdered"
+            value="{
+                path: 'odataV2>OrderDate',
+                type: 'sap.ui.model.odata.type.DateTime',
+                constraints: { displayFormat: 'Date' }
+            }"
+            change=".onOrderDateChange"
+        />
+
+        <Label
+            id="lblEditRequired"
+            text="{i18n>requiredDate}"
+        />
+        <DatePicker
+            id="dpRequired"
+            value="{
+                path: 'odataV2>RequiredDate',
+                type: 'sap.ui.model.odata.type.DateTime',
+                constraints: { displayFormat: 'Date' }
+            }"
+            change=".onOrderDateChange"
+        />
+
+        <Label
+            id="lblEditShipName"
+            text="{i18n>name}"
+            required="true"
+        />
+        <Input
+            id="inpShipName"
+            value="{odataV2>ShipName}"
+            maxLength="40"
+            liveChange=".onOrderInputLiveChange"
+        />
+
+        <Label
+            id="lblEditStreet"
+            text="{i18n>street}"
+        />
+        <Input
+            id="inpStreet"
+            value="{odataV2>ShipAddress}"
+            maxLength="60"
+        />
+
+        <Label
+            id="lblEditZipCity"
+            text="{i18n>zipCity}"
+            required="true"
+        />
+        <Input
+            id="inpZip"
+            value="{odataV2>ShipPostalCode}"
+            maxLength="10"
+            liveChange=".onOrderInputLiveChange"
+        />
+        <Input
+            id="inpCity"
+            value="{odataV2>ShipCity}"
+            maxLength="15"
+            liveChange=".onOrderInputLiveChange"
+        />
+
+        <Label
+            id="lblEditCountry"
+            text="{i18n>country}"
+            required="true"
+        />
+        <Input
+            id="inpCountry"
+            value="{odataV2>ShipCountry}"
+            maxLength="30"
+            liveChange=".onOrderInputLiveChange"
+        />
+    </form:SimpleForm>
+</core:FragmentDefinition>

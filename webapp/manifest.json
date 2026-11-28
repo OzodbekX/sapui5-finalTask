@@ -66,11 +66,11 @@
         }
       },
       "odataV2": {
-        "type": "sap.ui.model.v2.ODataModel",
+        "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "mainService",
         "preload": true,
         "settings": {
-          "defaultBindingMode": "OneWay"
+          "defaultBindingMode": "TwoWay"
         }
       }
     },
@@ -88,49 +88,47 @@
         "type": "View",
         "viewType": "XML",
         "path": "project1.view",
-        "viewPath": "project1.view",
         "async": true,
         "bypassed": {
-          "target": ["master"]
-        },
-        "routes": [
-          {
-            "name": "master",
-            "pattern": "",
-            "target": ["master"]
-          },
-          {
-            "name": "object",
-            "pattern": "Orders/{objectId}",
-            "target": ["master", "object"]
-          }
-        ],
-        "targets": {
-          "master": {
-            "id": "Master",
-            "name": "Master",
-            "lavel": 1,
-            "controlAggregation": "beginColumnPages"
-          },
-          "object": {
-            "id": "Detail",
-            "name": "Detail",
-            "lavel": 2,
-            "controlAggregation": "midColumnPages"
-          }
+          "target": ["master", "notFound"]
         }
       },
+
       "routes": [
         {
-          "name": "RouteMain",
-          "pattern": ":?query:",
-          "target": ["TargetMain"]
+          "name": "master",
+          "pattern": "",
+          "target": ["master"]
+        },
+        {
+          "name": "create",
+          "pattern": "new",
+          "target": ["master", "object"]
+        },
+        {
+          "name": "object",
+          "pattern": "Orders/{objectId}:?query:",
+          "target": ["master", "object"]
         }
       ],
       "targets": {
-        "TargetMain": {
-          "id": "Main",
-          "name": "Main"
+        "master": {
+          "id": "Master",
+          "name": "Master",
+          "level": 1,
+          "controlAggregation": "beginColumnPages"
+        },
+        "object": {
+          "id": "Detail",
+          "name": "Detail",
+          "level": 2,
+          "controlAggregation": "midColumnPages"
+        },
+        "notFound": {
+          "id": "NotFound",
+          "name": "NotFound",
+          "level": 2,
+          "controlAggregation": "midColumnPages"
         }
       }
     },

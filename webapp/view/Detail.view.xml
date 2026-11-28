@@ -9,6 +9,7 @@
     <f:DynamicPage
         id="detailPage"
         toggleHeaderOnTitleClick="true"
+        showFooter="{detailView>/editMode}"
     >
         <f:title>
             <f:DynamicPageTitle id="detailTitle">
@@ -20,11 +21,26 @@
                 </f:heading>
                 <f:actions>
                     <Button
+                        id="editOrderButton"
+                        text="{i18n>edit}"
+                        type="Emphasized"
+                        press=".onEditOrder"
+                        visible="{= !${detailView>/editMode} }"
+                    />
+                    <Button
+                        id="deleteOrderButton"
+                        text="{i18n>delete}"
+                        type="Transparent"
+                        press=".onDeleteOrder"
+                        visible="{= !${detailView>/editMode} }"
+                    />
+                    <Button
                         id="emailButton"
                         icon="sap-icon://email"
                         type="Transparent"
                         tooltip="{i18n>sendEmail}"
                         press=".onSendEmail"
+                        visible="{= !${detailView>/editMode} }"
                     />
                 </f:actions>
                 <f:navigationActions>
@@ -48,6 +64,7 @@
             <f:DynamicPageHeader
                 id="detailHeader"
                 pinnable="true"
+                visible="{= !${detailView>/isNew} }"
             >
                 <HBox
                     id="headerBox"
@@ -91,11 +108,16 @@
 
         <f:content>
             <VBox id="detailContent">
+                <core:Fragment
+                    fragmentName="project1.view.fragments.OrderForm"
+                    type="XML"
+                />
                 <IconTabBar
                     id="iconTabBar"
                     selectedKey="shipping"
                     expandable="false"
                     class="sapUiResponsiveContentPadding"
+                    visible="{= !${detailView>/editMode} }"
                 >
                     <items>
                         <IconTabFilter
@@ -220,6 +242,10 @@
                                     id="employeeAvatar"
                                     displaySize="XL"
                                     displayShape="Square"
+                                    initials="{
+                                        parts: ['odataV2>Employee/FirstName', 'odataV2>Employee/LastName'],
+                                        formatter: '.formatter.initials'
+                                    }"
                                 />
                             </form:SimpleForm>
                         </IconTabFilter>
@@ -232,6 +258,7 @@
                     width="auto"
                     items="{odataV2>Order_Details}"
                     updateFinished=".onLineItemsUpdateFinished"
+                    visible="{= !${detailView>/editMode} }"
                 >
                     <headerToolbar>
                         <Toolbar id="lineItemsToolbar">
@@ -306,5 +333,21 @@
                 </Table>
             </VBox>
         </f:content>
+        <f:footer>
+            <OverflowToolbar id="detailFooter">
+                <ToolbarSpacer id="footerSpacer" />
+                <Button
+                    id="saveOrderButton"
+                    type="Emphasized"
+                    text="{i18n>save}"
+                    press=".onSaveOrder"
+                />
+                <Button
+                    id="cancelOrderButton"
+                    text="{i18n>cancel}"
+                    press=".onCancelOrder"
+                />
+            </OverflowToolbar>
+        </f:footer>
     </f:DynamicPage>
 </mvc:View>

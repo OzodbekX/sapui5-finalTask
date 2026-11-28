@@ -14,6 +14,7 @@
                     showRefreshButton="true"
                     tooltip="{i18n>searchTooltip}"
                     search=".onSearch"
+                    enabled="{= !${appView>/editMode} }"
                     width="auto"
                 >
                     <layoutData>
@@ -33,6 +34,7 @@
                     type="Transparent"
                     tooltip="{i18n>filter}"
                     press=".onOpenFilter"
+                    enabled="{= !${appView>/editMode} }"
                 />
                 <Button
                     id="groupButton"
@@ -40,6 +42,15 @@
                     type="Transparent"
                     tooltip="{i18n>group}"
                     press=".onOpenGroup"
+                    enabled="{= !${appView>/editMode} }"
+                />
+                <Button
+                    id="addButton"
+                    icon="sap-icon://add"
+                    type="Transparent"
+                    tooltip="{i18n>addOrder}"
+                    press=".onAddOrder"
+                    enabled="{= !${appView>/editMode} }"
                 />
             </OverflowToolbar>
         </subHeader>

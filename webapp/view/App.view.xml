@@ -3,6 +3,7 @@
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.f"
+    height="100%"
 >
     <f:FlexibleColumnLayout
         id="layout"

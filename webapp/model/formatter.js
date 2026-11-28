@@ -33,6 +33,13 @@ sap.ui.define(
         }
         return amountFormat.format(Number(unitPrice) * Number(quantity));
       },
+
+      initials(firstName, lastName) {
+        return [firstName, lastName]
+          .map((part) => (part || "").trim().charAt(0))
+          .join("")
+          .toUpperCase();
+      },
     };
   },
 );

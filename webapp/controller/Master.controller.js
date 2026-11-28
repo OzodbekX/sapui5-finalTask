@@ -11,6 +11,7 @@ sap.ui.define(
     "use strict";
 
     const ODATA_MODEL = "odataV2";
+    const CUSTOMER_FILTER_MODEL = "customerFilter";
 
     return BaseController.extend("project1.controller.Master", {
       formatter,
@@ -19,6 +20,7 @@ sap.ui.define(
         this._searchFilters = [];
         this._dialogFilters = [];
         this._selectedOrderId = null;
+        this._selectedCustomers = new Set();
 
         this.setModel(
           new JSONModel({
@@ -26,6 +28,7 @@ sap.ui.define(
           }),
           "masterView",
         );
+        this.setModel(new JSONModel({ items: [] }), CUSTOMER_FILTER_MODEL);
 
         const router = this.getRouter();
         router
@@ -69,44 +72,36 @@ sap.ui.define(
         }
       },
 
-      onUpdateFinished(event) {
-        const total = event.getParameter("total");
-        const bundle = this.getResourceBundle();
-        this.getModel("masterView").setProperty(
-          "/title",
-          total
-            ? bundle.getText("masterTitle", [total])
-            : bundle.getText("masterTitleNoCount"),
-        );
-        this._selectCurrentItem();
-      },
-
-      onSelectionChange(event) {
-        const ctx = event
-          .getParameter("listItem")
-          .getBindingContext(ODATA_MODEL);
-        this.getRouter().navTo("object", {
-          objectId: ctx.getProperty("OrderID"),
-        });
-      },
-
-      onSearch(event) {
-        if (event.getParameter("refreshButtonPressed")) {
-          this._getList().getBinding("items").refresh();
-          return;
+      _restoreSelection() {
+        if (this._selectedOrderId) {
+          this._selectCurrentItem();
+        } else {
+          this._getList().removeSelections(true);
         }
-        const query = (event.getParameter("query") || "").trim();
-        this._searchFilters = query
-          ? [
-              new Filter({
-                path: "CustomerName",
-                operator: FilterOperator.Contains,
-                value1: query,
-                caseSensitive: false,
-              }),
-            ]
-          : [];
-        this._applyFilters();
+      },
+
+      _loadCustomerFilterItems() {
+        return new Promise((resolve) => {
+          this.getModel(ODATA_MODEL).read("/Orders", {
+            urlParameters: { $select: "CustomerName" },
+            success: (data) => {
+              const names = [
+                ...new Set(
+                  data.results.map((order) => order.CustomerName).filter(Boolean),
+                ),
+              ].sort((a, b) => a.localeCompare(b));
+              this.getModel(CUSTOMER_FILTER_MODEL).setProperty(
+                "/items",
+                names.map((name) => ({
+                  name,
+                  selected: this._selectedCustomers.has(name),
+                })),
+              );
+              resolve();
+            },
+            error: () => resolve(),
+          });
+        });
       },
 
       _applyFilters() {
@@ -134,8 +129,62 @@ sap.ui.define(
         return this._pViewSettings;
       },
 
+      onUpdateFinished(event) {
+        const total = event.getParameter("total");
+        const bundle = this.getResourceBundle();
+        this.getModel("masterView").setProperty(
+          "/title",
+          total
+            ? bundle.getText("masterTitle", [total])
+            : bundle.getText("masterTitleNoCount"),
+        );
+        this._selectCurrentItem();
+      },
+
+      async onSelectionChange(event) {
+        const ctx = event
+          .getParameter("listItem")
+          .getBindingContext(ODATA_MODEL);
+        if (!(await this.confirmDiscardChanges())) {
+          this._restoreSelection();
+          return;
+        }
+        this.getRouter().navTo("object", {
+          objectId: ctx.getProperty("OrderID"),
+        });
+      },
+
+      onAddOrder() {
+        this._selectedOrderId = null;
+        this._getList().removeSelections(true);
+        this.getRouter().navTo("create");
+      },
+
+      onSearch(event) {
+        if (event.getParameter("refreshButtonPressed")) {
+          this._getList().getBinding("items").refresh();
+          return;
+        }
+        const query = (event.getParameter("query") || "").trim();
+        this._searchFilters = query
+          ? [
+            new Filter({
+              path: "CustomerName",
+              operator: FilterOperator.Contains,
+              value1: query,
+              caseSensitive: false,
+            }),
+          ]
+          : [];
+        this._applyFilters();
+      },
+
       async onOpenFilter() {
-        (await this._loadViewSettingsDialog()).open("filter");
+        const [dialog] = await Promise.all([
+          this._loadViewSettingsDialog(),
+          this._loadCustomerFilterItems(),
+        ]);
+        dialog.open("filter");
       },
 
       async onOpenGroup() {
@@ -149,6 +198,9 @@ sap.ui.define(
           groupDescending,
         } = event.getParameters();
 
+        this._selectedCustomers = new Set(
+          filterItems.map((item) => item.getKey()),
+        );
         this._dialogFilters = filterItems.map(
           (item) =>
             new Filter(

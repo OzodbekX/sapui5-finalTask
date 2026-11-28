@@ -19,27 +19,17 @@
                 text="{i18n>customer}"
                 key="CustomerName"
                 multiSelect="true"
+                items="{
+                    path: 'customerFilter>/items',
+                    templateShareable: false
+                }"
             >
                 <items>
                     <ViewSettingsItem
-                        id="fAlfreds"
-                        text="Alfreds Futterkiste"
-                        key="Alfreds Futterkiste"
-                    />
-                    <ViewSettingsItem
-                        id="fHorn"
-                        text="Around the Horn"
-                        key="Around the Horn"
-                    />
-                    <ViewSettingsItem
-                        id="fBerglunds"
-                        text="Berglunds snabbköp"
-                        key="Berglunds snabbköp"
-                    />
-                    <ViewSettingsItem
-                        id="fTortuga"
-                        text="Tortuga Restaurante"
-                        key="Tortuga Restaurante"
+                        id="filterCustomerItem"
+                        text="{customerFilter>name}"
+                        key="{customerFilter>name}"
+                        selected="{customerFilter>selected}"
                     />
                 </items>
             </ViewSettingsFilterItem>

@@ -16,6 +16,10 @@ sap.ui.define(
         this.setModel(models.createDeviceModel(), "device");
         this.setModel(models.createAppViewModel(), "appView");
 
+        this.getRouter().attachBypassed(() =>
+          this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded"),
+        );
+
         // enable routing
         this.getRouter().initialize();
       },
